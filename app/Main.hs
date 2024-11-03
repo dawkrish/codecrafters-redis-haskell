@@ -11,8 +11,9 @@ main = do
     let port = "6379"
     putStrLn $ "Redis server listening on port " ++ port
     TCP.serve TCP.HostAny port $ \(socket, address) -> do
-        putStrLn $ "successfully connected client: " ++ show address
+        putStrLn $ "Client connected: " ++ show address
         loop socket
+        putStrLn $ "Client disconnected: " ++ show address
 
 loop :: TCP.Socket -> IO()
 loop sock = do
