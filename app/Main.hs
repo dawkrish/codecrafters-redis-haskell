@@ -5,6 +5,8 @@
 module Main (main) where
 
 import qualified Network.Simple.TCP as TCP
+import qualified Data.ByteString as BS
+import qualified RESP
 
 main :: IO ()
 main = do
@@ -21,6 +23,14 @@ loop sock = do
     case msg of
         Nothing -> putStrLn "Client has exited!"
         (Just bs) -> do
-            TCP.send sock "+PONG\r\n"
+            handleCommand sock bs
             loop sock
             
+handleCommand :: TCP.Socket -> BS.ByteString -> IO()
+handleCommand sock cmd 
+    | cmd == "PING\n" = TCP.send sock "+PONG\r\n"
+    | otherwise = do
+        print cmd
+        putStrLn "CHELSEAFC"
+        print "CHELSEAaaaaaaaa"
+        TCP.send sock cmd
